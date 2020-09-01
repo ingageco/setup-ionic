@@ -2256,20 +2256,11 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             checkPlatform();
-            // install cordova-cli
-            const cordovaVersion = core.getInput('cordova-version');
-            if (checkVersion(cordovaVersion)) {
-                yield installer_1.installCordova(cordovaVersion);
-            }
             // install ionic-cli
             const ionicVersion = core.getInput('ionic-version');
             if (checkVersion(ionicVersion)) {
                 yield installer_1.installIonic(ionicVersion);
             }
-            // install specific version of java and gradle
-            // await installJava();
-            // install cocoapods
-            yield installer_1.installPods();
             // run `ionic info`
             yield installer_1.logInstalledInfo();
         }
@@ -6242,30 +6233,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.installNpmPkg = exports.logInstalledInfo = exports.installPods = exports.installJava = exports.installIonic = exports.installCordova = void 0;
+exports.installNpmPkg = exports.logInstalledInfo = exports.installIonic = void 0;
 const child = __importStar(__webpack_require__(129));
-const path = __importStar(__webpack_require__(622));
 const tc = __importStar(__webpack_require__(533));
 const core = __importStar(__webpack_require__(470));
-/**
- * Install Cordova Cli
- *
- * https://www.npmjs.com/package/cordova
- *
- * @param version
- */
-function installCordova(version) {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield installNpmPkg('cordova', version);
-        // install cordova-res
-        // https://github.com/ionic-team/cordova-res
-        // await installNpmPkg('cordova-res');
-        // Fix access permissions
-        yield exec2(`sudo chown -R $USER:$GROUP ~/.npm`);
-        yield exec2(`sudo chown -R $USER:$GROUP ~/.config`);
-    });
-}
-exports.installCordova = installCordova;
 /**
  * Install Ionic Cli
  *
@@ -6274,33 +6245,12 @@ exports.installCordova = installCordova;
 function installIonic(version) {
     return __awaiter(this, void 0, void 0, function* () {
         yield installNpmPkg('@ionic/cli', version);
+        // Fix access permissions
+        yield exec2(`sudo chown -R $USER:$GROUP ~/.npm`);
+        yield exec2(`sudo chown -R $USER:$GROUP ~/.config`);
     });
 }
 exports.installIonic = installIonic;
-/**
- * Install Java
- *
- */
-function installJava() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (process.platform === 'linux') {
-            yield exec2(path.join(__dirname, 'install-openjdk-8'));
-        }
-    });
-}
-exports.installJava = installJava;
-/**
- * Install CocoaPods
- *
- */
-function installPods() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (process.platform === 'darwin') {
-            yield exec2(`sudo gem install cocoapods`);
-        }
-    });
-}
-exports.installPods = installPods;
 /**
  * Logs installed information
  *

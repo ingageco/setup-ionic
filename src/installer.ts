@@ -3,25 +3,7 @@ import * as path from 'path'
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
 
-/**
- * Install Cordova Cli
- *
- * https://www.npmjs.com/package/cordova
- *
- * @param version
- */
-export async function installCordova(version?: string): Promise<void> {
-  await installNpmPkg('cordova', version)
-
-  // install cordova-res
-  // https://github.com/ionic-team/cordova-res
-  // await installNpmPkg('cordova-res');
-
-  // Fix access permissions
-  await exec2(`sudo chown -R $USER:$GROUP ~/.npm`)
-  await exec2(`sudo chown -R $USER:$GROUP ~/.config`)
-}
-
+ 
 /**
  * Install Ionic Cli
  *
@@ -29,27 +11,14 @@ export async function installCordova(version?: string): Promise<void> {
  */
 export async function installIonic(version?: string): Promise<void> {
   await installNpmPkg('@ionic/cli', version)
+
+    // Fix access permissions
+    await exec2(`sudo chown -R $USER:$GROUP ~/.npm`)
+    await exec2(`sudo chown -R $USER:$GROUP ~/.config`)
 }
 
-/**
- * Install Java
- *
- */
-export async function installJava(): Promise<void> {
-  if (process.platform === 'linux') {
-    await exec2(path.join(__dirname, 'install-openjdk-8'))
-  }
-}
-
-/**
- * Install CocoaPods
- *
- */
-export async function installPods(): Promise<void> {
-  if (process.platform === 'darwin') {
-    await exec2(`sudo gem install cocoapods`)
-  }
-}
+ 
+ 
 
 /**
  * Logs installed information

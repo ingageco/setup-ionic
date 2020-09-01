@@ -17,11 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Use coturiv/setup-ionic
+    - name: Use ingageco/setup-ionic
       uses: ./
-    - name: Run cordova project tests
+    - name: Run ionic project tests
       run: |
-        ionic start testapp blank --cordova --type angular --no-link --no-git --no-interactive --confirm
+        ionic start testapp blank --capacitor --type angular --no-link --no-git --no-interactive --confirm
         cd testapp
-        ionic cordova platform add android@latest
-        ionic cordova build android
