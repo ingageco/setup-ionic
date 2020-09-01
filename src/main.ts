@@ -1,22 +1,16 @@
 import * as core from '@actions/core'
 import * as semver from 'semver'
-import {
-  installIonic,
-  logInstalledInfo
-} from './installer'
+import {installIonic, logInstalledInfo} from './installer'
 
 async function run(): Promise<void> {
   try {
     checkPlatform()
-
- 
 
     // install ionic-cli
     const ionicVersion = core.getInput('ionic-version')
     if (checkVersion(ionicVersion)) {
       await installIonic(ionicVersion)
     }
- 
 
     // run `ionic info`
     await logInstalledInfo()

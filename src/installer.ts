@@ -1,9 +1,7 @@
 import * as child from 'child_process'
-import * as path from 'path'
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
 
- 
 /**
  * Install Ionic Cli
  *
@@ -12,13 +10,10 @@ import * as core from '@actions/core'
 export async function installIonic(version?: string): Promise<void> {
   await installNpmPkg('@ionic/cli', version)
 
-    // Fix access permissions
-    await exec2(`sudo chown -R $USER:$GROUP ~/.npm`)
-    await exec2(`sudo chown -R $USER:$GROUP ~/.config`)
+  // Fix access permissions
+  await exec2(`sudo chown -R $USER:$GROUP ~/.npm`)
+  await exec2(`sudo chown -R $USER:$GROUP ~/.config`)
 }
-
- 
- 
 
 /**
  * Logs installed information
